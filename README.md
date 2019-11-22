@@ -4,7 +4,7 @@ Simple wallpaper changing python script that reads gnome dynamic wallpaper xml f
 At the moment not much more than a proof of concept... but hey... it works :).
 
 ## Requirements
-- beautifulsoup 4 (pip3 install beautifulsoup4)
+- beautifulsoup 4 (sudo apt install python3-bs4 or sudo pip3 install beautifulsoup4)
 
 ## Usage
 - python3 eos_dynwall.py <path/to/your/xml/file>
