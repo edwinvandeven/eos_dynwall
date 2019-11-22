@@ -1,21 +1,19 @@
 #!/usr/bin/python3
-#   ______ ____   _____  __          _______ _    _ 
-#  |  ____/ __ \ / ____| \ \        / / ____| |  | |
-#  | |__ | |  | | (___    \ \  /\  / / |    | |__| |
-#  |  __|| |  | |\___ \    \ \/  \/ /| |    |  __  |
-#  | |___| |__| |____) |    \  /\  / | |____| |  | |
-#  |______\____/|_____/      \/  \/   \_____|_|  |_|
-#                                                   
-#                                                   
+#   ______ ____   _____      _______     ___   ___          __     _      _      
+#  |  ____/ __ \ / ____|    |  __ \ \   / / \ | \ \        / /\   | |    | |     
+#  | |__ | |  | | (___      | |  | \ \_/ /|  \| |\ \  /\  / /  \  | |    | |     
+#  |  __|| |  | |\___ \     | |  | |\   / | . ` | \ \/  \/ / /\ \ | |    | |     
+#  | |___| |__| |____) |    | |__| | | |  | |\  |  \  /\  / ____ \| |____| |____ 
+#  |______\____/|_____/     |_____/  |_|  |_| \_|   \/  \/_/    \_\______|______|
+#                                                                                
+#                                                                                
 #  
-#                                      Version 0.0.1
+#                                                                   Version 0.0.1
 #  
-#             Edwin van de Ven <edwin@simplycode.nl>
-#                                                   
-#  
-# requirements: pip install beautifulsoup4 (installed globally)
+#                                          Edwin van de Ven <edwin@simplycode.nl>
 #
 # This script assumes the dynamic wallpaper will start from midnight
+# Provide the path to your xml file as the first arument; eg. python3 eos_dynwall /home/user/Pictures/mywalls.xml
 
 import argparse
 import os
