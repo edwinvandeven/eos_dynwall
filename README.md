@@ -9,6 +9,9 @@ At the moment not much more than a proof of concept... but hey... it works :).
 ## Usage
 - python3 eos_dynwall.py <path/to/your/xml/file>
 
+## Maybe useful
+- Use dynamic wallpaper editor: https://flathub.org/apps/details/com.github.maoschanz.DynamicWallpaperEditor
+
 ## Current limitations:
 
 - It expects the start time to be midnight and the images to cover the full 24 hours of a day. 
