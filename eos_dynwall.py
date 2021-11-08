@@ -16,13 +16,43 @@
 # Provide the path to your xml file as the first arument; eg. python3 eos_dynwall /home/user/Pictures/mywalls.xml
 
 import argparse
+import dbus
+import getpass
 import os
 import shutil
 import subprocess
 import time
+from pathlib import Path
+from gi.repository import Gio
 from datetime import datetime
-
 from bs4 import BeautifulSoup, Comment
+
+
+def _set_wallpaper(picture_uri):
+    picture_uri = picture_uri.replace("'", '')
+    # Update gsettings value
+    gso = Gio.Settings.new("org.gnome.desktop.background")
+    gso.set_string("picture-uri", picture_uri)
+    
+    # Copy to /var/lib/lightdm-data/<username>/wallpaper/
+    username = getpass.getuser()
+    lightdm_wall_folder = "/var/lib/lightdm-data/%s/wallpaper" % username
+    wall_source_path = picture_uri.replace("file://", "")
+    lightdm_dest = os.path.join(lightdm_wall_folder, os.path.basename(wall_source_path))
+    
+    # Clean up folder before copy
+    [f.unlink() for f in Path(lightdm_wall_folder).glob("*") if f.is_file()]    
+    shutil.copyfile(wall_source_path, lightdm_dest)
+    
+    # Set greeter image
+    system_bus = dbus.SystemBus()
+    uid = os.getuid()
+    obj_path = "/org/freedesktop/Accounts/User%s" % str(uid)
+    print(obj_path)    
+    system_bus = dbus.SystemBus()
+    proxy = system_bus.get_object("org.freedesktop.Accounts", obj_path)
+    properties_manager = dbus.Interface(proxy, 'org.freedesktop.DBus.Properties')
+    properties_manager.Set('org.freedesktop.DisplayManager.AccountsService', 'BackgroundFile', lightdm_dest)
 
 
 def update_wall(xml_file):
@@ -70,16 +100,7 @@ def update_wall(xml_file):
                         wall_location = tag.find("file").get_text()
                         print(wall_location)
                         print(os.path.exists(wall_location))
-                        result = subprocess.check_output([
-                            "/usr/bin/gsettings",  
-                            "set",  
-                            "org.gnome.desktop.background", 
-                            "picture-uri",  
-                            "'file://%s'" % wall_location
-                        ])
-                        
-                        # Lightdm copy
-                        shutil.copy(wall_location, os.path.join(light_dm_wall_folder, 'wall.jpg'))
+                        _set_wallpaper(wall_location)
                         
                     else:
                         print('calculation transition')
@@ -116,21 +137,9 @@ def update_wall(xml_file):
                         
                         print(result)
                         
-                        os.rename(wall_new, wall)
-                        
-                        
-                        result = subprocess.check_output([
-                            "/usr/bin/gsettings",  
-                            "set",  
-                            "org.gnome.desktop.background", 
-                            "picture-uri",  
-                            "'file://%s'" % wall
-                        ])
-                        
-                        # Lightdm copy
-                        shutil.copy(wall, os.path.join(light_dm_wall_folder, 'wall.jpg'))
-                        
-                        
+                        os.rename(wall_new, wall)  
+                        _set_wallpaper(wall)                       
+                      
                     break
                 
                 
